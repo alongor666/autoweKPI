@@ -11,7 +11,7 @@
   python main.py \
     --csv data/你的数据.csv \
     --output output/经营分析周报.html \
-    --template template/四川分公司车险第49周经营分析模板.html \
+    --template templates/四川分公司车险第49周经营分析模板.html \
     --org 四川 --week 4 --year 2025
   ```
 - 配置覆盖：如需指定映射/计划/阈值，追加 `--mapping ... --year-plans ... --thresholds ...`。

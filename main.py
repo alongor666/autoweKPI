@@ -6,7 +6,7 @@ from src.report_generator import ReportGenerator
 def parse_args(base_dir):
     parser = argparse.ArgumentParser(description="生成经营分析周报")
     parser.add_argument('--csv', default=os.path.join(base_dir, 'data', '2025保单第49周变动成本明细表.csv'), help='输入数据 CSV 路径，默认使用示例周数据')
-    parser.add_argument('--template', default=os.path.join(base_dir, 'template', '四川分公司车险第49周经营分析模板.html'), help='报告模板 HTML 路径')
+    parser.add_argument('--template', default=os.path.join(base_dir, 'templates', '四川分公司车险第49周经营分析模板.html'), help='报告模板 HTML 路径')
     parser.add_argument('--output', default=os.path.join(base_dir, 'output', '经营分析周报.html'), help='输出报告 HTML 路径')
     parser.add_argument('--mapping', default=os.path.join(base_dir, 'reference', 'business_type_mapping.json'), help='业务类型映射文件')
     parser.add_argument('--year-plans', default=os.path.join(base_dir, 'reference', 'year-plans.json'), help='年度计划数据文件')

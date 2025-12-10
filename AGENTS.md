@@ -4,7 +4,7 @@
 - 根目录脚本：
   - `main.py`: 命令行入口，负责批量生成周报。
   - `app.py`: Web 应用入口，提供文件上传和报告预览功能。
-- 模板：`template/`（主要模板：`四川分公司车险第49周经营分析模板.html`）。
+- 模板：`templates/`（主要模板：`四川分公司车险第49周经营分析模板.html`）。
 - 数据：`data/`（存放CSV源数据）。
 - 产出：`output/`（生成的HTML报告）。
 - 核心逻辑：`src/` (`data_loader`, `mapper`, `kpi_calculator`, `report_generator`)。
@@ -30,5 +30,5 @@
 - PR 需说明改动范围、涉及数据源、验证步骤；UI/模板变更附截图并关联相关任务。
 
 ## Agent 提示
-- 修改前先确认 `template/`、`data/` 是否有最新格式或字段。
+- 修改前先确认 `templates/`、`data/` 是否有最新格式或字段。
 - 编辑 HTML 模板时务必保留脚本依赖的 ID 和 class，避免破坏图表渲染。

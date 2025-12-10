@@ -3,11 +3,11 @@
 ## 项目总览
 - 目标：读取任意周次的车险变动成本数据，生成符合终极模板的经营分析周报 HTML。
 - 核心组件：数据加载 `src/data_loader.py`、字段映射 `src/mapper.py`、KPI 计算 `src/kpi_calculator.py`、报告生成 `src/report_generator.py`、入口脚本 `main.py`。
-- 关键模板：`template/四川分公司车险第49周经营分析模板.html`，输出默认至 `output/经营分析周报.html`。
+- 关键模板：`templates/四川分公司车险第49周经营分析模板.html`，输出默认至 `output/经营分析周报.html`。
 
 ## 目录结构与职责
 - `data/`：输入 CSV（字段见下），可放入多周数据，如 `2025保单第4周变动成本明细表.csv`。
-- `template/`：终极展示模板（含 ECharts 与 UI ID）。
+- `templates/`：终极展示模板（含 ECharts 与 UI ID）。
 - `reference/`：业务类型映射、年度计划、阈值配置。
 - `src/`：业务逻辑。`tests/`（可建）存放 pytest 用例。
 - `output/`：生成的报告 HTML。
@@ -33,7 +33,7 @@
   python main.py \
     --csv data/2025保单第4周变动成本明细表.csv \
     --week 4 --year 2025 --org 四川 \
-    --template template/四川分公司车险第49周经营分析模板.html \
+    --template templates/四川分公司车险第49周经营分析模板.html \
     --output output/经营分析周报.html
   ```
 - 若不传 `--week`/`--year`，周次取 CSV 的 `week_number`，年份从文件名中的四位数字推断（默认 2025）。

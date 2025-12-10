@@ -13,7 +13,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 
 # Constants
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_PATH = os.path.join(BASE_DIR, 'template', '四川分公司车险第49周经营分析模板.html')
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates', '四川分公司车险第49周经营分析模板.html')
 OUTPUT_PATH = os.path.join(BASE_DIR, 'output', '经营分析周报_web.html')
 MAPPING_PATH = os.path.join(BASE_DIR, 'reference', 'business_type_mapping.json')
 YEAR_PLANS_PATH = os.path.join(BASE_DIR, 'reference', 'year-plans.json')
