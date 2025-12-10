@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for
+from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for, send_from_directory
 import os
 import sys
 
@@ -18,6 +18,11 @@ OUTPUT_PATH = os.path.join(BASE_DIR, 'output', '经营分析周报_web.html')
 MAPPING_PATH = os.path.join(BASE_DIR, 'reference', 'business_type_mapping.json')
 YEAR_PLANS_PATH = os.path.join(BASE_DIR, 'reference', 'year-plans.json')
 THRESHOLDS_PATH = os.path.join(BASE_DIR, 'reference', 'thresholds.json')
+
+@app.route('/asset/<path:filename>')
+def serve_asset(filename):
+    # 允许模板通过 /asset/... 访问本地静态资源（如 echarts）
+    return send_from_directory(os.path.join(BASE_DIR, 'asset'), filename)
 
 @app.route('/')
 def index():
