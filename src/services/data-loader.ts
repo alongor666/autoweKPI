@@ -9,14 +9,9 @@ import type {
   RawDataRow,
   DataLoadResult,
   ValidationError,
-  ParseConfig,
-  REQUIRED_COLUMNS,
-  NUMERIC_COLUMNS,
 } from '@/types'
-import { ensureNumber } from '@/utils/math'
-
-// 导入常量
 import { REQUIRED_COLUMNS as REQ_COLS, NUMERIC_COLUMNS as NUM_COLS } from '@/types/data'
+import { ensureNumber } from '@/utils/math'
 
 export class DataLoader {
   /**
