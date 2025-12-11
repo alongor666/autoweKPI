@@ -12,28 +12,47 @@ export interface RawDataRow {
   third_level_organization: string // 三级机构
   second_level_organization?: string // 二级机构
   province?: string // 省份
+  chengdu_branch?: string // 成都分公司
+  
+  // 时间维度
+  snapshot_date: string // 快照日期
+  policy_start_year: number // 保单起保年份
+  week_number: number // 周数
 
   // 客户维度
-  customer_category: string // 客户类别（大客户、个人、其他）
+  customer_category_3: string // 客户类别（大客户、个人、其他） - 对应 CSV
+  customer_category?: string // 兼容旧代码，清洗时映射
 
   // 业务维度
   business_type_category: string // 业务类型类别
   business_type?: string // 业务类型（原始）
+  insurance_type?: string // 险种
+  coverage_type?: string // 承保类型 (主全, 交三, etc.)
+  vehicle_insurance_grade?: string // 车险等级
+  renewal_status?: string // 续保状态
+  terminal_source?: string // 终端来源
 
   // 保费数据（单位：元）
   signed_premium_yuan: number // 签单保费
   matured_premium_yuan: number // 满期保费
-
+  commercial_premium_before_discount_yuan?: number // 折前商险保费
+  
   // 赔付数据（单位：元）
   reported_claim_payment_yuan: number // 已报案赔付支出
-  ibnr_yuan: number // 未决赔款准备金（IBNR）
-
+  
   // 费用数据（单位：元）
-  acquisition_cost_yuan: number // 获客成本（手续费+佣金）
-  operating_expense_yuan: number // 营运费用
+  expense_amount_yuan: number // 费用额
+  
+  // 数量数据
+  policy_count: number // 保单件数
+  claim_case_count: number // 赔案件数
 
   // 年度计划（单位：元）
-  year_plan_premium?: number // 年度保费计划
+  premium_plan_yuan?: number // 年度保费计划 (对应 CSV)
+  year_plan_premium?: number // 兼容旧代码
+
+  // 边际贡献
+  marginal_contribution_amount_yuan?: number // 边际贡献额
 
   // 可选字段
   [key: string]: string | number | undefined
@@ -94,9 +113,9 @@ export const REQUIRED_COLUMNS: (keyof RawDataRow)[] = [
   'signed_premium_yuan',
   'matured_premium_yuan',
   'reported_claim_payment_yuan',
-  'ibnr_yuan',
-  'acquisition_cost_yuan',
-  'operating_expense_yuan',
+  'expense_amount_yuan',
+  'policy_count',
+  'claim_case_count',
 ]
 
 /**
@@ -106,8 +125,12 @@ export const NUMERIC_COLUMNS: (keyof RawDataRow)[] = [
   'signed_premium_yuan',
   'matured_premium_yuan',
   'reported_claim_payment_yuan',
-  'ibnr_yuan',
-  'acquisition_cost_yuan',
-  'operating_expense_yuan',
-  'year_plan_premium',
+  'expense_amount_yuan',
+  'policy_count',
+  'claim_case_count',
+  'premium_plan_yuan',
+  'marginal_contribution_amount_yuan',
+  'commercial_premium_before_discount_yuan',
+  'week_number',
+  'policy_start_year'
 ]

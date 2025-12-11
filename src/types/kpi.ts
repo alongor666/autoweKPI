@@ -8,33 +8,42 @@
  * 对应Python的kpi_calculator.py
  */
 export interface KPIResult {
-  // 基础指标（单位：万元）
+  // 基础指标（单位：万元 或 元，视配置而定）
   签单保费: number // signed_premium_yuan
   满期保费: number // matured_premium_yuan
-  已赚保费: number // matured_premium - (ibnr的变化)
+  已赚保费?: number // matured_premium (optional)
 
-  // 成本指标（单位：万元）
+  // 成本指标
   已报案赔付: number // reported_claim_payment_yuan
-  未决赔款准备金: number // ibnr_yuan
-  获客成本: number // acquisition_cost_yuan
-  营运费用: number // operating_expense_yuan
+  费用额: number // expense_amount_yuan
+  
+  // 数量指标
+  保单件数: number // policy_count
+  赔案件数: number // claim_case_count
 
   // 比率指标（单位：%）
   满期赔付率: number // 已报案赔付 / 满期保费 * 100
-  变动成本率: number // (已报案赔付 + 未决 + 获客成本) / 满期保费 * 100
-  综合成本率: number // (已报案赔付 + 未决 + 获客成本 + 营运费用) / 满期保费 * 100
-  费用率: number // 营运费用 / 满期保费 * 100
-  贡献率: number // 100 - 变动成本率
+  费用率: number // 费用额 / 签单保费 * 100 (注意：分母是签单保费)
+  变动成本率: number // 满期赔付率 + 费用率
+  综合成本率: number // 同变动成本率 (如果没有固定成本)
+  贡献率: number // 100 - 变动成本率 (满期边际贡献率)
+  满期边际贡献率?: number // Alias for 贡献率
+  
+  出险率: number // 赔案件数 / 保单件数 * 100
+  满期率: number // 满期保费 / 签单保费 * 100
 
-  // 边际指标（单位：万元）
+  // 均值指标
+  案均赔款: number // 已报案赔付 / 赔案件数
+  
+  // 边际指标
   满期边际贡献额: number // 满期保费 * 贡献率 / 100
 
   // 进度指标
-  满期率: number // 满期保费 / 签单保费 * 100
-  保费达成率?: number // 签单保费 / 年度计划 * 100（如果有年度计划）
+  保费达成率?: number // 签单保费 / 年度计划 * 100
+  年计划达成率?: number // 保费达成率 / 时间进度 * 100
 
   // 辅助字段
-  年度保费计划?: number // year_plan_premium（如果有）
+  年度保费计划?: number // premium_plan_yuan
 }
 
 /**

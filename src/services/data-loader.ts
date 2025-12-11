@@ -12,6 +12,7 @@ import type {
 } from '@/types'
 import { REQUIRED_COLUMNS as REQ_COLS, NUMERIC_COLUMNS as NUM_COLS } from '@/types/data'
 import { ensureNumber } from '@/utils/math'
+import { duckDBService } from '@/services/duckdb-loader'
 
 export class DataLoader {
   /**
@@ -22,6 +23,14 @@ export class DataLoader {
    */
   async loadFromFile(file: File): Promise<DataLoadResult> {
     try {
+      // 优先尝试加载到DuckDB
+      try {
+        await duckDBService.loadCSV(file)
+        console.log('Successfully loaded data into DuckDB')
+      } catch (e) {
+        console.warn('Failed to load data into DuckDB, falling back to pure JS processing', e)
+      }
+
       const content = await this.readFileContent(file)
       return this.parseCSV(content)
     } catch (error) {
@@ -179,7 +188,7 @@ export class DataLoader {
       }
 
       if (!cleaned.customer_category) {
-        cleaned.customer_category = '其他'
+        cleaned.customer_category = cleaned.customer_category_3 || '其他'
       }
 
       return cleaned
