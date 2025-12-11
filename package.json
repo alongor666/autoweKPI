@@ -4,7 +4,8 @@
   "description": "Static web app for auto insurance KPI analysis",
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./style.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./style.css --watch"
+    "watch:css": "tailwindcss -i ./src/input.css -o ./style.css --watch",
+    "start": "python3 -m http.server 8080"
   },
   "keywords": [],
   "author": "",
