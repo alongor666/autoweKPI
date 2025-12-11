@@ -1,10 +1,40 @@
-{
-  "metadata": {
-    "description": "车险业务类型名称映射关系表",
-    "lastUpdated": "2025-12-10",
-    "version": "1.0.0",
-    "source": "src/constants/dimensions.ts"
+export const THRESHOLDS = {
+  "四象限基准线": {
+    "保费达成率": 100,
+    "变动成本率": 88,
+    "满期赔付率": 70,
+    "费用率": 14,
+    "出险率": 11.5,
+    "案均赔款": 4800
   },
+  "问题机构识别阈值": {
+    "年保费未达标": 95,
+    "变动成本率超标": 93,
+    "满期赔付率超标": 72,
+    "费用率超标": 18
+  }
+};
+
+export const YEAR_PLANS = {
+  "年度保费计划": {
+    "四川分公司": 431000000,
+    "天府": 197300000,
+    "武侯": 13500000,
+    "高新": 55700000,
+    "青羊": 43400000,
+    "新都": 35000000,
+    "德阳": 12800000,
+    "宜宾": 22700000,
+    "泸州": 10750000,
+    "乐山": 11900000,
+    "自贡": 9450000,
+    "资阳": 12000000,
+    "达州": 6500000,
+    "本部": 1000000
+  }
+};
+
+export const BUSINESS_TYPE_MAPPING = {
   "business_types": [
     {
       "ui_full_name": "非营业客车新车",
@@ -251,67 +281,5 @@
       "maps_to": "其他营业货车",
       "note": "默认映射到其他营业货车"
     }
-  ],
-  "field_mappings": {
-    "csv_column": {
-      "field_name": "business_type_category",
-      "column_position": 3,
-      "data_type": "string",
-      "required": true,
-      "description": "业务类型分类字段"
-    },
-    "database_field": {
-      "field_name": "businessTypeCategory",
-      "entity": "InsuranceRecord",
-      "data_type": "string",
-      "required": true,
-      "description": "业务类型分类字段（实体属性）"
-    },
-    "api_validation": {
-      "schema_file": "src/lib/validations/insurance-schema.ts",
-      "validation_rule": "z.string().min(1, '业务类型不能为空')",
-      "description": "API端数据验证规则"
-    }
-  },
-  "statistics": {
-    "total_canonical_types": 16,
-    "categories": {
-      "非营业客车": 3,
-      "非营业货车": 2,
-      "营业货车": 8,
-      "营业客车": 2,
-      "其他": 1
-    },
-    "total_compatibility_mappings": 11,
-    "code_identifier_pattern": "business_category_subtype_modifier"
-  },
-  "usage_locations": {
-    "frontend_components": [
-      "src/components/filters/product-filter.tsx",
-      "src/components/data-table.tsx",
-      "src/hooks/use-premium-dimension-analysis.ts",
-      "src/hooks/use-loss-dimension-analysis.ts"
-    ],
-    "backend_apis": [
-      "src/app/api/kpi/route.ts",
-      "src/app/api/data/validate/route.ts"
-    ],
-    "utilities": [
-      "src/utils/csvParser.ts",
-      "src/domain/rules/data-normalization.ts"
-    ],
-    "domain_entities": [
-      "src/domain/entities/InsuranceRecord.ts"
-    ]
-  },
-  "related_documents": [
-    {
-      "file": "开发文档/03_technical_design/dimensions_dictionary.md",
-      "description": "维度字典文档"
-    },
-    {
-      "file": "开发文档/03_technical_design/data_architecture.md",
-      "description": "数据架构文档"
-    }
   ]
-}
+};

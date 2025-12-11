@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车险经营分析报告生成器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.15/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen">
+        <!-- Upload Screen -->
+        <div v-if="!reportData" class="container mx-auto px-4 py-12 max-w-4xl">
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    车险经营分析报告生成器
+                </h1>
+                <p class="text-gray-600 mb-8 text-lg">
+                    纯前端处理，数据安全不上传。支持 .csv 文件自动生成交互式报表。
+                </p>
+
+                <div 
+                    class="drop-zone rounded-xl p-12 cursor-pointer mb-8"
+                    :class="{ 'active': isDragging }"
+                    @dragover.prevent="isDragging = true"
+                    @dragleave.prevent="isDragging = false"
+                    @drop.prevent="handleDrop"
+                    @click="triggerFileInput"
+                >
+                    <input 
+                        type="file" 
+                        ref="fileInput" 
+                        class="hidden" 
+                        accept=".csv"
+                        @change="handleFileChange"
+                    >
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-16 text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="text-lg font-medium text-gray-700 mb-2">
+                            点击或拖拽上传 CSV 文件
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            支持自动识别分公司与周数
+                        </p>
+                    </div>
+                </div>
+
+                <div v-if="error" class="bg-red-50 text-red-600 p-4 rounded-lg mb-6 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {{ error }}
+                </div>
+
+                <div v-if="isProcessing" class="flex items-center justify-center text-blue-600">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    正在生成报告...
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center text-gray-400 text-sm">
+                <p>Powered by Vue 3 & ECharts | GitHub Pages Version</p>
+            </div>
+        </div>
+
+        <!-- Report Container -->
+        <div v-else class="bg-gray-100 min-h-screen relative">
+            <div class="fixed top-4 right-4 z-50 flex gap-2">
+                <button @click="reset" class="bg-white px-4 py-2 rounded shadow text-gray-700 hover:bg-gray-50">返回上传</button>
+            </div>
+            <iframe ref="reportFrame" class="w-full h-screen border-0" :srcdoc="reportHtml"></iframe>
+        </div>
+    </div>
+
+    <!-- Load Logic -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>
