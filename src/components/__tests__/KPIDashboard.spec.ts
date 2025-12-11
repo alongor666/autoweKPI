@@ -1,7 +1,19 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import KPIDashboard from '../report/KPIDashboard.vue'
 import type { KPIResult } from '@/types/kpi'
+
+// Mock ECharts to prevent canvas errors
+vi.mock('echarts', () => ({
+  init: vi.fn(() => ({
+    setOption: vi.fn(),
+    resize: vi.fn(),
+    dispose: vi.fn()
+  })),
+  graphic: {
+    LinearGradient: vi.fn()
+  }
+}))
 
 const mockKPIData: KPIResult = {
   签单保费: 1000,

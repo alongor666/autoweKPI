@@ -22,7 +22,7 @@ import { InfoFilled } from '@element-plus/icons-vue'
 
 interface Props {
   title: string
-  value: number
+  value: number | undefined | null
   unit?: string
   precision?: number
   description?: string
