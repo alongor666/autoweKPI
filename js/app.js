@@ -7,6 +7,8 @@ const app = createApp({
         const isDragging = ref(false);
         const reportHtml = ref('');
         const fileInput = ref(null);
+        const isProcessing = ref(false);
+        const error = ref('');
         const generator = new ReportGenerator();
         let templateContent = '';
 
@@ -16,7 +18,10 @@ const app = createApp({
             .then(text => {
                 templateContent = text;
             })
-            .catch(err => console.error('Failed to load template:', err));
+            .catch(err => {
+                console.error('Failed to load template:', err);
+                error.value = '模板加载失败，请刷新页面重试';
+            });
 
         const triggerFileInput = () => {
             fileInput.value.click();
@@ -34,10 +39,14 @@ const app = createApp({
         };
 
         const processFile = (file) => {
+            error.value = '';
+            
             if (!file.name.endsWith('.csv')) {
-                alert('请上传 CSV 文件');
+                error.value = '请上传 CSV 文件';
                 return;
             }
+
+            isProcessing.value = true;
 
             Papa.parse(file, {
                 header: true,
@@ -46,19 +55,15 @@ const app = createApp({
                     try {
                         const data = results.data;
                         if (!data || data.length === 0) {
-                            alert('CSV 文件为空或格式不正确');
-                            return;
+                            throw new Error('CSV 文件为空或格式不正确');
                         }
 
                         // Generate Report Data
-                        // Default to week 49 as per template, or calculate from date?
-                        // For now use 49 to match template default
                         const reportData = generator.processData(data, 49);
 
                         // Inject into template
                         if (!templateContent) {
-                            alert('模板文件尚未加载完成，请稍后再试');
-                            return;
+                            throw new Error('模板文件尚未加载完成，请稍后再试');
                         }
 
                         const dataJson = JSON.stringify(reportData, null, 2);
@@ -70,17 +75,22 @@ const app = createApp({
                         reportHtml.value = injectedHtml;
                     } catch (e) {
                         console.error(e);
-                        alert('生成报告出错: ' + e.message);
+                        error.value = '生成报告出错: ' + e.message;
+                    } finally {
+                        isProcessing.value = false;
                     }
                 },
                 error: (err) => {
-                    alert('解析 CSV 出错: ' + err.message);
+                    error.value = '解析 CSV 出错: ' + err.message;
+                    isProcessing.value = false;
                 }
             });
         };
 
         const reset = () => {
             reportHtml.value = '';
+            error.value = '';
+            isProcessing.value = false;
             if (fileInput.value) fileInput.value.value = '';
         };
 
@@ -88,6 +98,8 @@ const app = createApp({
             isDragging,
             reportHtml,
             fileInput,
+            isProcessing,
+            error,
             triggerFileInput,
             handleFileChange,
             handleDrop,
